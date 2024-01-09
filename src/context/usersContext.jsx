@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import { createContext, useContext, useState, useMemo } from 'react';
 import data from '../data/initialUsersData.json';
 
 // initial value
@@ -11,23 +11,12 @@ const UsersContext = createContext({
 // value provider
 export const ContextProvider = ({ children }) => {
   const [usersData, setUsersData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  console.log('usersData', usersData);
-
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setUsersData(data);
-    }, 2000);
-
-    return () => {
-      clearTimeout(t);
-    };
-  }, []);
-
-  const contextValue = useMemo(() => ({ usersData, setUsersData }), [usersData]);
-
-  return <UsersContext.Provider value={contextValue}>{children}</UsersContext.Provider>;
+  return (
+    <UsersContext.Provider value={{ usersData, setUsersData }}>
+      {children}
+    </UsersContext.Provider>
+  );
 };
 
 // consumer

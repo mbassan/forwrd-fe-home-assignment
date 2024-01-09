@@ -15,3 +15,10 @@
 
   --error-color: #f5424b;
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  height: calc(100vh - 150px);
+}

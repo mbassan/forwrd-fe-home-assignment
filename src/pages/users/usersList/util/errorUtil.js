@@ -1,4 +1,4 @@
-import { ERROR_TYPES } from './';
+import { ERROR_TYPES } from '../constants';
 
 function deleteFieldErrorState({ errors, userId, name }) {
   delete errors[userId]?.[name];
@@ -26,7 +26,6 @@ function countErrors(errors) {
           counts.empty += 1;
         }
         if (errorData.type === ERROR_TYPES.ERROR) {
-          console.log('invalid');
           counts.invalid += 1;
         }
       });
@@ -38,7 +37,6 @@ function countErrors(errors) {
 }
 
 function buildErrorSummaryMessage(errorCounts) {
-  console.log({ errorCounts });
   const messages = [];
   if (errorCounts.empty > 0) {
     messages.push(`Empty Fields - ${errorCounts.empty}`);

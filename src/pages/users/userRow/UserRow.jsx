@@ -1,16 +1,9 @@
 import { Grid } from '@mui/material';
-import InputField from '../../../components/InputField';
 import AutocompleteField from '../../../components/AutocompleteField';
 import TrashIconButton from '../../../components/TrashIconButton';
 import countryOptions from '../../../data/countries.json';
+import { ROW_FIELD_INPUTS } from './constants';
 import styles from '../users.module.css';
-
-const ROW_FIELD_INPUTS = {
-  name: InputField,
-  country: AutocompleteField,
-  email: InputField,
-  phone: InputField,
-};
 
 const UserRow = ({ user, onChangehandler, onDeletehandler, errors = {} }) => {
   return (

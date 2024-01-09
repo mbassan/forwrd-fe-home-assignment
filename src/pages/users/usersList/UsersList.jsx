@@ -1,13 +1,14 @@
 import { Typography } from '@mui/material';
 import UserRow from '../userRow/UserRow';
 import AddButton from '../../../components/AddButton';
-import * as util from './util';
+import { validateUser, updateFieldErrorState } from './util';
+import { EMPTY_USER } from './constants';
 import styles from '../users.module.css';
 
 function UsersList({ users, setUsers, errors, setErrors }) {
   const checkForErrors = (user, name) => {
-    const errorData = util.validateUser(user, name);
-    const updatedErrors = util.updateFieldErrorState({
+    const errorData = validateUser(user, name);
+    const updatedErrors = updateFieldErrorState({
       errors,
       errorData,
       userId: user.id,
@@ -19,7 +20,7 @@ function UsersList({ users, setUsers, errors, setErrors }) {
   const updateUserProperty = (userId, name, value) => {
     setUsers((users) =>
       users.map((user) => {
-        if (user.userId !== userId) {
+        if (user.id !== userId) {
           return user;
         }
         const updatedUser = { ...user, [name]: value };
@@ -33,15 +34,24 @@ function UsersList({ users, setUsers, errors, setErrors }) {
     updateUserProperty(userId, name, value);
   };
 
+  const onCreatehandler = () => {
+    setUsers((users) => [EMPTY_USER, ...users]);
+  };
+
   const onDeletehandler = (userId) => {
     setUsers((users) => users.filter((user) => user.id !== userId));
+    setErrors((currentErrors) => {
+      const updatedErrors = { ...currentErrors };
+      delete updatedErrors[userId];
+      return updatedErrors;
+    });
   };
 
   return (
     <div className={styles.usersList}>
       <div className={styles.usersListHeader}>
         <Typography variant="h6">Users List</Typography>
-        <AddButton />
+        <AddButton handleClick={onCreatehandler} />
       </div>
       <div className={styles.usersListContent}>
         {users.map((user) => (

@@ -1,33 +1,8 @@
 import countries from '../../../../data/countries.json';
-
-export const ERROR_TYPES = {
-  EMPTY: 'empty',
-  ERROR: 'error',
-};
-
-const EMPTY_VALUE_ERROR = 'Please enter a value.';
-
-const FIELD_VALIDATION = {
-  name: {
-    validator: validateField,
-    pattern: /^[a-z\s]+$/i,
-    error: 'Only accepts characters a-z.',
-  },
-  email: {
-    validator: validateField,
-    pattern: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-    error: 'Invalid email',
-  },
-  phone: {
-    validator: validateField,
-    pattern: /^\+[1-9][0-9]{7,14}$/,
-    error: 'Invalid phone number',
-  },
-  country: { validator: validateCountry, error: 'Please select a valid country.' },
-};
+import { ERROR_TYPES, EMPTY_VALUE_ERROR, FIELD_VALIDATION_DATA } from '../constants';
 
 function validateField(user, fieldName) {
-  const fieldProps = FIELD_VALIDATION[fieldName];
+  const fieldProps = FIELD_VALIDATION_DATA[fieldName];
   if (!fieldProps) {
     return false;
   }
@@ -38,15 +13,23 @@ function validateCountry(user) {
   return countries.includes(user.country);
 }
 
+const FIELD_VALIDATORS = {
+  name: validateField,
+  email: validateField,
+  phone: validateField,
+  country: validateCountry,
+};
+
 export function validateUser(user, fieldName) {
-  const fieldProps = FIELD_VALIDATION[fieldName];
-  if (!fieldProps) {
+  const fieldProps = FIELD_VALIDATION_DATA[fieldName];
+  const validator = FIELD_VALIDATORS[fieldName];
+  if (!fieldProps || !validator) {
     return false;
   }
   if (!user[fieldName] || user[fieldName].length === 0) {
     return { message: EMPTY_VALUE_ERROR, type: ERROR_TYPES.EMPTY };
   }
-  const isValid = fieldProps.validator(user, fieldName);
+  const isValid = validator(user, fieldName);
   if (!isValid) {
     return { message: fieldProps.error, type: ERROR_TYPES.ERROR };
   }
