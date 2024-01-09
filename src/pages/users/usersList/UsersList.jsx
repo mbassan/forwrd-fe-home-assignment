@@ -1,9 +1,8 @@
-import { Typography } from '@mui/material';
 import UserRow from '../userRow/UserRow';
 import AddButton from '../../../components/AddButton';
-import { validateUser, updateFieldErrorState } from './util';
-import { EMPTY_USER } from './constants';
-import styles from '../users.module.css';
+import Panel from '../../../containers/Panel';
+import { validateUser, updateFieldErrorState } from '../util';
+import { EMPTY_USER } from '../constants';
 
 function UsersList({ users, setUsers, errors, setErrors }) {
   const checkForErrors = (user, name) => {
@@ -35,6 +34,9 @@ function UsersList({ users, setUsers, errors, setErrors }) {
   };
 
   const onCreatehandler = () => {
+    if (users.find((user) => !user.id)) {
+      return;
+    }
     setUsers((users) => [EMPTY_USER, ...users]);
   };
 
@@ -48,23 +50,17 @@ function UsersList({ users, setUsers, errors, setErrors }) {
   };
 
   return (
-    <div className={styles.usersList}>
-      <div className={styles.usersListHeader}>
-        <Typography variant="h6">Users List</Typography>
-        <AddButton handleClick={onCreatehandler} />
-      </div>
-      <div className={styles.usersListContent}>
-        {users.map((user) => (
-          <UserRow
-            key={user.id}
-            user={user}
-            errors={errors[user.id]}
-            onChangehandler={onChangehandler}
-            onDeletehandler={onDeletehandler}
-          />
-        ))}
-      </div>
-    </div>
+    <Panel title="User List" controls={<AddButton handleClick={onCreatehandler} />}>
+      {users.map((user) => (
+        <UserRow
+          key={user.id}
+          user={user}
+          errors={errors[user.id]}
+          onChangehandler={onChangehandler}
+          onDeletehandler={onDeletehandler}
+        />
+      ))}
+    </Panel>
   );
 }
 

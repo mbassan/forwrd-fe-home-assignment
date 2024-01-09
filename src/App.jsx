@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Layout from './components/Layout';
+import Layout from './containers/Layout';
 import StatisticsPage from './pages/statistics/StatisticsPage';
 import UsersPage from './pages/users/UsersPage';
 import { useUsersContext } from './context/usersContext';

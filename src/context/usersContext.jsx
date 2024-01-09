@@ -1,17 +1,13 @@
-import { createContext, useContext, useState, useMemo } from 'react';
-import data from '../data/initialUsersData.json';
+import { createContext, useContext, useState } from 'react';
 
-// initial value
 const UsersContext = createContext({
   usersData: [],
   setUsersData: () => {},
   loading: false,
 });
 
-// value provider
 export const ContextProvider = ({ children }) => {
   const [usersData, setUsersData] = useState([]);
-
   return (
     <UsersContext.Provider value={{ usersData, setUsersData }}>
       {children}
@@ -19,7 +15,5 @@ export const ContextProvider = ({ children }) => {
   );
 };
 
-// consumer
 export const useUsersContext = () => useContext(UsersContext);
-
 export default UsersContext;

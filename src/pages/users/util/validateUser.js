@@ -1,4 +1,4 @@
-import countries from '../../../../data/countries.json';
+import countries from '../../../data/countries.json';
 import { ERROR_TYPES, EMPTY_VALUE_ERROR, FIELD_VALIDATION_DATA } from '../constants';
 
 function validateField(user, fieldName) {
@@ -34,4 +34,19 @@ export function validateUser(user, fieldName) {
     return { message: fieldProps.error, type: ERROR_TYPES.ERROR };
   }
   return false;
+}
+
+export function validateNewUser(users) {
+  const firstUser = users[0];
+  if (!firstUser || !!firstUser.id) {
+    return false;
+  }
+  const errors = {};
+  Object.keys(FIELD_VALIDATORS).forEach((fieldName) => {
+    const errorData = validateUser(firstUser, fieldName);
+    if (errorData) {
+      errors[fieldName] = errorData;
+    }
+  });
+  return Object.keys(errors).length > 0 ? errors : false;
 }

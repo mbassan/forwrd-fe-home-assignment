@@ -1,0 +1,22 @@
+.panel {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  height: 500px;
+  width: 100%;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 16px;
+  background-color: #1f2a62;
+}
+
+.panelContent {
+  overflow: auto;
+  height: calc(100% - 96px);
+  padding: 20px 25px;
+}

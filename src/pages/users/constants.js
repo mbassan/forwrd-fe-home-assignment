@@ -25,9 +25,9 @@ export const FIELD_VALIDATION_DATA = {
 };
 
 export const EMPTY_USER = {
+  id: null,
   country: '',
   email: '',
-  id: '',
   name: '',
   phone: '',
 };
