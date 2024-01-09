@@ -1,19 +1,25 @@
-import { styled } from '@mui/material/styles';
-import { TextField } from '@mui/material';
+import { useState } from 'react';
+import StyledTextField from './StyledTextField';
 
-const StyledTextField = styled(TextField)({
-  boxShadow: 'none',
-  textTransform: 'none',
-  backgroundColor: '#909196',
-  borderRadius: '4px',
-});
+let timeoutRef;
+export function debounce(callback) {
+  clearTimeout(timeoutRef);
+  timeoutRef = setTimeout(() => callback(), 200);
+}
 
 const InputField = ({ name, value, onChangehandler, error, disabled, placeholder }) => {
+  const [currentValue, setCurrentValue] = useState(value);
+
+  const onChange = (e) => {
+    setCurrentValue(e.target.value);
+    debounce(() => onChangehandler(e.target.name, e.target.value));
+  };
+
   return (
     <StyledTextField
       name={name}
-      value={value}
-      onChange={(e) => onChangehandler(e.target.name, e.target.value)}
+      value={currentValue}
+      onChange={onChange}
       error={error}
       disabled={disabled}
       placeholder={placeholder}
