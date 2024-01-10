@@ -6,8 +6,8 @@ import { useUsersContext } from './context/usersContext';
 import { createUserLoader } from './loaders/fetchUsers';
 
 function App() {
-  const { setUsersData } = useUsersContext();
-  const loader = createUserLoader(setUsersData);
+  const { usersData, setUsersData } = useUsersContext();
+  const loader = createUserLoader(setUsersData, usersData);
   const router = createBrowserRouter([
     {
       element: <Layout />,

@@ -1,11 +1,6 @@
 import { useState } from 'react';
 import StyledTextField from './StyledTextField';
-
-let timeoutRef;
-export function debounce(callback) {
-  clearTimeout(timeoutRef);
-  timeoutRef = setTimeout(() => callback(), 200);
-}
+import { debounce } from '../util';
 
 const InputField = ({ name, value, onChangehandler, error, disabled, placeholder }) => {
   const [currentValue, setCurrentValue] = useState(value);

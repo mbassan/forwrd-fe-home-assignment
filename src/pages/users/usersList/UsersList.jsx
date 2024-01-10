@@ -1,10 +1,32 @@
+import { useState, useEffect } from 'react';
 import UserRow from '../userRow/UserRow';
 import AddButton from '../../../components/AddButton';
 import Panel from '../../../containers/Panel';
+import SearchInput from '../../../components/SearchInput';
 import { validateUser, updateFieldErrorState } from '../util';
 import { EMPTY_USER } from '../constants';
+import { debounce } from '../../../util';
 
 function UsersList({ users, setUsers, errors, setErrors }) {
+  const [filteredUsers, setFilteredUsers] = useState(users);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filterUsers = (event) => {
+    const value = event?.target?.value?.toLowerCase() ?? searchTerm;
+    debounce(() => {
+      setSearchTerm(value);
+      setFilteredUsers(
+        users.filter(
+          (user) =>
+            !user.id ||
+            user.name.toLowerCase().includes(value) ||
+            user.email.includes(value) ||
+            user.phone.includes(value)
+        )
+      );
+    });
+  };
+
   const checkForErrors = (user, name) => {
     const errorData = validateUser(user, name);
     const updatedErrors = updateFieldErrorState({
@@ -49,9 +71,18 @@ function UsersList({ users, setUsers, errors, setErrors }) {
     });
   };
 
+  useEffect(() => filterUsers(), [users]);
+
+  const formControls = (
+    <div>
+      <SearchInput handleChange={filterUsers} />
+      <AddButton handleClick={onCreatehandler} />
+    </div>
+  );
+
   return (
-    <Panel title="User List" controls={<AddButton handleClick={onCreatehandler} />}>
-      {users.map((user) => (
+    <Panel title={`User List (${users.length ?? '...'})`} controls={formControls}>
+      {filteredUsers.map((user) => (
         <UserRow
           key={user.id}
           user={user}
